@@ -108,7 +108,7 @@ Before you download any dataset, you can begin by testing your configuration wit
 If all tests pass, you're good to go.
 
 ## Dataset  
-You can download the dataset here [`LibriSpeech/train-clean-100`](http://www.openslr.org/resources/12/train-clean-100.tar.gz). Extract the contents as `<datasets_root>/LibriSpeech/train-clean-100` where `<datasets_root>` is a directory of your choosing. **The input of the data should be in flac format**.   
+You can download the dataset here [`LibriSpeech/train-clean-100`](http://www.openslr.org/resources/12/train-clean-100.tar.gz). Extract the contents as `<datasets_root>/LibriSpeech/train-clean-100` where `<datasets_root>` is a directory of your choosing. **The input of the data should be in flac/wav/m4a/mp3 format**.   
 
 After training, you could get three models named *pretrained.pt* in the folders /encoder/, /synthesizer/, and/vocoder/.
 
@@ -119,15 +119,15 @@ python demo_cli.py
 ```
 or run it using docker.   
 If you want to use docker, here are the steps:
-## 1. You should probably have access to a machine with a CUDA-compatible GPU  
-## 2. Install nvidia-docker  
+1. You should probably have access to a machine with a CUDA-compatible GPU  
+2. Install nvidia-docker  
 Follow the instructions here: https://github.com/NVIDIA/nvidia-docker. Note that you’ll need have installed the NVIDIA driver and Docker as well.
-## 3. Build the docker image
+3. Build the docker image
 run command:
 ```
 nvidia-docker build -t pytorch-voice .
 ```
-## 4. Build a container to run the demo
+4. Build a container to run the demo
 run command:
 ```
 nvidia-docker run pytorch-voice
