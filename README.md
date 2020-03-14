@@ -122,12 +122,34 @@ If you want to use docker, here are the steps:
 1. You should probably have access to a machine with a CUDA-compatible GPU  
 2. Install nvidia-docker  
 Follow the instructions here: https://github.com/NVIDIA/nvidia-docker. Note that you’ll need have installed the NVIDIA driver and Docker as well.
-3. Build the docker image
+3. Create Dockerfile
+You can create a Dockerfile like this 
+```
+FROM pytorch/pytorch
+
+WORKDIR "/workspace"
+RUN apt-get clean \
+        && apt-get update \
+        && apt-get install -y ffmpeg libportaudio2 openssh-server python3-pyqt5 xauth \
+        && apt-get -y autoremove \
+        && mkdir /var/run/sshd \
+        && mkdir /root/.ssh \
+        && chmod 700 /root/.ssh \
+        && ssh-keygen -A \
+        && sed -i "s/^.*PasswordAuthentication.*$/PasswordAuthentication no/" /etc/ssh/sshd_config \
+        && sed -i "s/^.*X11Forwarding.*$/X11Forwarding yes/" /etc/ssh/sshd_config \
+        && sed -i "s/^.*X11UseLocalhost.*$/X11UseLocalhost no/" /etc/ssh/sshd_config \
+        && grep "^X11UseLocalhost" /etc/ssh/sshd_config || echo "X11UseLocalhost no" >> /etc/ssh/sshd_config
+ADD Real-Time-Voice-Cloning/requirements.txt /workspace/requirements.txt
+RUN pip install -r /workspace/requirements.txt
+CMD ["python","demo_cli.py"]
+```
+4. Build the docker image
 run command:
 ```
 nvidia-docker build -t pytorch-voice .
 ```
-4. Build a container to run the demo
+5. Build a container to run the demo
 run command:
 ```
 nvidia-docker run pytorch-voice
